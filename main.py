@@ -254,6 +254,11 @@ async def main():
     threading.Thread(target=start_health_server, daemon=True).start()
     await client.start()
     log.info("Telegram user session connected")
+    try:
+        await client.send_message("me", "I'm now healthy")
+        log.info("Startup health message sent to Saved Messages")
+    except Exception:
+        log.exception("Could not send startup health message to Saved Messages")
     log.info("Source=%s | Leech group=%s", SOURCE_CHANNEL_ID, LEECH_GROUP_ID)
 
     # Validate that the logged-in account can resolve both configured chats.
