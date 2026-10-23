@@ -32,4 +32,4 @@ services:
       - key: LIMIT_PER_BOT
         value: "3"
       - key: WINDOW_SECONDS
-        value: "600"
+        value: "900"
