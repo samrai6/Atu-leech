@@ -222,13 +222,25 @@ async def queue_worker():
 
 @client.on(events.NewMessage)
 async def source_listener(event):
+    message = event.message
+    # Temporary diagnostic logging: confirms which chat IDs this session can see.
+    log.info(
+        "Incoming Telegram message: chat_id=%s message_id=%s photo=%s document=%s",
+        event.chat_id,
+        message.id,
+        bool(message.photo),
+        bool(message.document),
+    )
+
     if event.chat_id != SOURCE_CHANNEL_ID:
         return
-    message = event.message
+
     # Telegram files/videos/audio/documents are normally represented as document;
     # photos are handled separately. Ignore text-only posts.
     if not (message.photo or message.document):
+        log.info("Source message %s ignored: no photo/document media", message.id)
         return
+
     inserted = enqueue_message(event.chat_id, message.id)
     if inserted:
         log.info("Queued source message %s", message.id)
