@@ -15,8 +15,6 @@ services:
         sync: false
       - key: SOURCE_CHANNEL_ID
         value: "-1002736316980"
-      - key: LEECH_GROUP_ID
-        value: "-5570627643"
       - key: BOT1_USERNAME
         value: SMDxLMcJeniBot
       - key: BOT1_COMMAND
