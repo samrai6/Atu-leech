@@ -17,7 +17,7 @@ API_HASH = os.environ["API_HASH"]
 SESSION_STRING = os.environ["SESSION_STRING"]
 
 SOURCE_CHANNEL_ID = int(os.getenv("SOURCE_CHANNEL_ID", "-1002736316980"))
-LEECH_GROUP_ID = int(os.getenv("LEECH_GROUP_ID", "-5570627643"))
+LEECH_GROUP_ID = int(os.getenv("LEECH_GROUP_ID", "-1002548576007"))
 
 # Each command is sent as a reply to the forwarded source message.
 BOTS = [
