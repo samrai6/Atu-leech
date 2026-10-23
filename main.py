@@ -27,7 +27,7 @@ BOTS = [
 ]
 
 LIMIT_PER_BOT = int(os.getenv("LIMIT_PER_BOT", "3"))
-WINDOW_SECONDS = int(os.getenv("WINDOW_SECONDS", "600"))
+WINDOW_SECONDS = int(os.getenv("WINDOW_SECONDS", "900"))
 DB_PATH = os.getenv("DB_PATH", "autoleech.sqlite3")
 PORT = int(os.getenv("PORT", "10000"))
 
@@ -161,7 +161,7 @@ async def process_job(job):
     bot = BOTS[bot_index]
     update_job(job_id, bot_index=bot_index, attempts=job["attempts"] + 1)
 
-    # Keep queue order. If the assigned bot is at its 3-per-10-minute limit,
+    # Keep queue order. If the assigned bot is at its 3-per-15-minute limit,
     # wait for its oldest slot to expire instead of skipping/reordering files.
     while True:
         wait_for = seconds_until_bot_available(bot_index)
