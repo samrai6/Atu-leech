@@ -1,0 +1,35 @@
+services:
+  - type: web
+    name: atu-leech
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: python main.py
+    healthCheckPath: /health
+    envVars:
+      - key: API_ID
+        sync: false
+      - key: API_HASH
+        sync: false
+      - key: SESSION_STRING
+        sync: false
+      - key: SOURCE_CHANNEL_ID
+        value: "-1002736316980"
+      - key: LEECH_GROUP_ID
+        value: "-1002183646282"
+      - key: BOT1_USERNAME
+        value: SMDxLMcJeniBot
+      - key: BOT1_COMMAND
+        value: /1
+      - key: BOT2_USERNAME
+        value: SMDxLmjenibot
+      - key: BOT2_COMMAND
+        value: /l2
+      - key: BOT3_USERNAME
+        value: AfLeechxBot
+      - key: BOT3_COMMAND
+        value: /l3
+      - key: LIMIT_PER_BOT
+        value: "3"
+      - key: WINDOW_SECONDS
+        value: "600"
