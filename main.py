@@ -187,8 +187,10 @@ async def process_job(job):
         update_job(job_id, status="forwarded", forwarded_message_id=forwarded_id, last_error=None)
         log.info("Forwarded source message %s as group message %s", job["source_message_id"], forwarded_id)
 
-    # The leech command must reply to the forwarded file.
-    await client.send_message(LEECH_GROUP_ID, bot["command"], reply_to=forwarded_id)
+    # Send the command from the logged-in Telegram USER SESSION (not from a bot token),
+    # as a reply to the forwarded file so the leech bot can process that exact message.
+    log.info("Sending %s from user session as reply to group message %s", bot["command"], forwarded_id)
+    await client.send_message(entity=LEECH_GROUP_ID, message=bot["command"], reply_to=forwarded_id)
     record_bot_usage(bot_index)
     update_job(job_id, status="done", last_error=None)
     log.info("Job #%s completed using %s (%s)", job_id, bot["name"], bot["command"])
