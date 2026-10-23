@@ -255,6 +255,29 @@ async def main():
     await client.start()
     log.info("Telegram user session connected")
     log.info("Source=%s | Leech group=%s", SOURCE_CHANNEL_ID, LEECH_GROUP_ID)
+
+    # Validate that the logged-in account can resolve both configured chats.
+    try:
+        source_entity = await client.get_entity(SOURCE_CHANNEL_ID)
+        log.info("Source resolved: title=%s id=%s", getattr(source_entity, "title", None), getattr(source_entity, "id", None))
+    except Exception:
+        log.exception("SOURCE CHANNEL CHECK FAILED: account cannot resolve SOURCE_CHANNEL_ID")
+
+    try:
+        group_entity = await client.get_entity(LEECH_GROUP_ID)
+        log.info("Leech group resolved: title=%s id=%s", getattr(group_entity, "title", None), getattr(group_entity, "id", None))
+    except Exception:
+        log.exception("LEECH GROUP CHECK FAILED: account cannot resolve LEECH_GROUP_ID")
+
+    # Diagnostic: check that the source has recent messages visible to this session.
+    try:
+        recent = await client.get_messages(SOURCE_CHANNEL_ID, limit=3)
+        log.info("Source history check: fetched %s message(s)", len(recent))
+        for item in recent:
+            log.info("Source history item: id=%s photo=%s document=%s", item.id, bool(item.photo), bool(item.document))
+    except Exception:
+        log.exception("SOURCE HISTORY CHECK FAILED")
+
     log.info("Routing: 3 files each -> Bot 1 /1, Bot 2 /l2, Bot 3 /l3; repeat after rate-limit slots expire")
     worker_task = asyncio.create_task(queue_worker())
     await client.run_until_disconnected()
